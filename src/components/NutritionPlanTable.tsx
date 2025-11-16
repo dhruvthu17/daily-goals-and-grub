@@ -16,19 +16,21 @@ interface NutritionPlanTableProps {
 
 export const NutritionPlanTable = ({ dietPlans, onUpdate }: NutritionPlanTableProps) => {
   const { toast } = useToast();
-  const [editedPlans, setEditedPlans] = useState<Record<number, Record<string, string>>>(
-    Object.fromEntries(
-      Object.entries(dietPlans).map(([day, meals]) => [
-        day,
-        {
-          breakfast: meals.breakfast.join("\n"),
-          lunch: meals.lunch.join("\n"),
-          snacks: meals.snacks.join("\n"),
-          dinner: meals.dinner.join("\n"),
-        }
-      ])
-    )
-  );
+  const [editedPlans, setEditedPlans] = useState<Record<number, Record<string, string>>>(() => {
+    const plans: Record<number, Record<string, string>> = {};
+    
+    for (let day = 0; day < 7; day++) {
+      const dayMeals = dietPlans[day] || { breakfast: [], lunch: [], snacks: [], dinner: [] };
+      plans[day] = {
+        breakfast: (dayMeals.breakfast || []).join("\n"),
+        lunch: (dayMeals.lunch || []).join("\n"),
+        snacks: (dayMeals.snacks || []).join("\n"),
+        dinner: (dayMeals.dinner || []).join("\n"),
+      };
+    }
+    
+    return plans;
+  });
 
   const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
   const meals = [
