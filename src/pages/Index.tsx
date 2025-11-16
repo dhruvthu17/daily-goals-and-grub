@@ -104,24 +104,27 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Background gradient overlay */}
-      <div className="fixed inset-0 bg-gradient-to-br from-background via-muted/30 to-background -z-10" />
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-10 w-96 h-96 bg-primary/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
+      </div>
       
-      <div className="container max-w-6xl mx-auto px-4 py-6 md:py-8">
+      <div className="container max-w-7xl mx-auto px-4 py-8 md:py-12">
         {/* Header */}
-        <div className="text-center mb-6 md:mb-8">
-          <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-2">
+        <div className="text-center mb-10 md:mb-14">
+          <h1 className="text-5xl md:text-7xl font-bold mb-3 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
             Daily Goals & Grub
           </h1>
-          <p className="text-sm md:text-base text-muted-foreground">Your personalized fitness companion</p>
+          <p className="text-base md:text-lg text-muted-foreground font-medium">Your personalized fitness journey starts here</p>
         </div>
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="daily" className="w-full">
-          <TabsList className="glass grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="daily">Daily View</TabsTrigger>
-            <TabsTrigger value="workout">Workout Plan</TabsTrigger>
-            <TabsTrigger value="nutrition">Nutrition Plan</TabsTrigger>
+          <TabsList className="glass grid w-full grid-cols-3 mb-8 p-1.5 h-auto gap-1">
+            <TabsTrigger value="daily" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Daily View</TabsTrigger>
+            <TabsTrigger value="workout" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Workout Plan</TabsTrigger>
+            <TabsTrigger value="nutrition" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Nutrition Plan</TabsTrigger>
           </TabsList>
 
           {/* Daily View Tab */}
