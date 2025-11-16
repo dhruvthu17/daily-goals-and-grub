@@ -30,11 +30,25 @@ const Index = () => {
 
   const [dietPlans, setDietPlans] = useState(() => {
     const saved = localStorage.getItem("dietPlans");
-    return saved ? JSON.parse(saved) : {
+    if (saved) return JSON.parse(saved);
+    
+    // Default meal plan for all days
+    const defaultMeals = {
       breakfast: ["Oatmeal with banana and honey", "2 boiled eggs", "Green tea"],
       lunch: ["Grilled chicken breast (200g)", "Brown rice (1 cup)", "Mixed vegetables", "Side salad"],
       snacks: ["Greek yogurt with berries", "Handful of almonds", "Protein shake"],
       dinner: ["Baked salmon (150g)", "Sweet potato", "Steamed broccoli", "Quinoa salad"],
+    };
+    
+    // Create weekly structure
+    return {
+      0: { ...defaultMeals },
+      1: { ...defaultMeals },
+      2: { ...defaultMeals },
+      3: { ...defaultMeals },
+      4: { ...defaultMeals },
+      5: { ...defaultMeals },
+      6: { ...defaultMeals },
     };
   });
 
@@ -61,14 +75,20 @@ const Index = () => {
 
   const handleMealEdit = (mealType: string, items: string[]) => {
     const key = mealType.toLowerCase();
-    setDietPlans(prev => ({ ...prev, [key]: items }));
+    setDietPlans(prev => ({ 
+      ...prev, 
+      [currentDay]: { 
+        ...prev[currentDay as keyof typeof prev], 
+        [key]: items 
+      } 
+    }));
     toast({
       title: "Meal Updated",
       description: `Your ${mealType.toLowerCase()} plan has been saved.`,
     });
   };
 
-  const handleDietPlansUpdate = (plans: any) => {
+  const handleDietPlansUpdate = (plans: Record<number, any>) => {
     setDietPlans(plans);
   };
 
@@ -154,25 +174,25 @@ const Index = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
                 <MealCard
                   title="Breakfast"
-                  items={dietPlans.breakfast}
+                  items={dietPlans[currentDay]?.breakfast || []}
                   icon={Coffee}
                   onEdit={handleMealEdit}
                 />
                 <MealCard
                   title="Lunch"
-                  items={dietPlans.lunch}
+                  items={dietPlans[currentDay]?.lunch || []}
                   icon={Sandwich}
                   onEdit={handleMealEdit}
                 />
                 <MealCard
                   title="Snacks"
-                  items={dietPlans.snacks}
+                  items={dietPlans[currentDay]?.snacks || []}
                   icon={Apple}
                   onEdit={handleMealEdit}
                 />
                 <MealCard
                   title="Dinner"
-                  items={dietPlans.dinner}
+                  items={dietPlans[currentDay]?.dinner || []}
                   icon={UtensilsCrossed}
                   onEdit={handleMealEdit}
                 />
