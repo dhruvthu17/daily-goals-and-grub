@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
 import { WorkoutCard } from "@/components/WorkoutCard";
 import { MealCard } from "@/components/MealCard";
+import { WorkoutPlanTable } from "@/components/WorkoutPlanTable";
+import { NutritionPlanTable } from "@/components/NutritionPlanTable";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronLeft, ChevronRight, Coffee, Sandwich, Apple, UtensilsCrossed } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -52,6 +55,10 @@ const Index = () => {
     });
   };
 
+  const handleWorkoutPlansUpdate = (plans: Record<number, string[]>) => {
+    setWorkoutPlans(plans);
+  };
+
   const handleMealEdit = (mealType: string, items: string[]) => {
     const key = mealType.toLowerCase();
     setDietPlans(prev => ({ ...prev, [key]: items }));
@@ -59,6 +66,10 @@ const Index = () => {
       title: "Meal Updated",
       description: `Your ${mealType.toLowerCase()} plan has been saved.`,
     });
+  };
+
+  const handleDietPlansUpdate = (plans: any) => {
+    setDietPlans(plans);
   };
 
   const nextDay = () => {
@@ -85,78 +96,106 @@ const Index = () => {
           <p className="text-sm md:text-base text-muted-foreground">Your personalized fitness companion</p>
         </div>
 
-        {/* Day Navigation */}
-        <div className="flex items-center justify-between mb-6 md:mb-8 glass rounded-2xl p-3 md:p-4">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={prevDay}
-            className="hover:bg-foreground/5 h-9 w-9 md:h-10 md:w-10"
-          >
-            <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
-          </Button>
-          
-          <div className="text-center">
-            <h2 className="text-xl md:text-2xl font-bold text-foreground">{days[currentDay]}</h2>
-            {isToday && (
-              <span className="inline-block mt-1 px-2 md:px-3 py-0.5 md:py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
-                Today
-              </span>
-            )}
-          </div>
+        {/* Tabs Navigation */}
+        <Tabs defaultValue="daily" className="w-full">
+          <TabsList className="glass grid w-full grid-cols-3 mb-6">
+            <TabsTrigger value="daily">Daily View</TabsTrigger>
+            <TabsTrigger value="workout">Workout Plan</TabsTrigger>
+            <TabsTrigger value="nutrition">Nutrition Plan</TabsTrigger>
+          </TabsList>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={nextDay}
-            className="hover:bg-foreground/5 h-9 w-9 md:h-10 md:w-10"
-          >
-            <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
-          </Button>
-        </div>
+          {/* Daily View Tab */}
+          <TabsContent value="daily" className="space-y-6 md:space-y-8">
+            {/* Day Navigation */}
+            <div className="flex items-center justify-between glass rounded-2xl p-3 md:p-4">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={prevDay}
+                className="hover:bg-foreground/5 h-9 w-9 md:h-10 md:w-10"
+              >
+                <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+              </Button>
+              
+              <div className="text-center">
+                <h2 className="text-xl md:text-2xl font-bold text-foreground">{days[currentDay]}</h2>
+                {isToday && (
+                  <span className="inline-block mt-1 px-2 md:px-3 py-0.5 md:py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
+                    Today
+                  </span>
+                )}
+              </div>
 
-        {/* Workout Section */}
-        <div className="mb-6 md:mb-8">
-          <WorkoutCard 
-            day={currentDay}
-            exercises={workoutPlans[currentDay as keyof typeof workoutPlans]} 
-            onEdit={handleWorkoutEdit}
-          />
-        </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={nextDay}
+                className="hover:bg-foreground/5 h-9 w-9 md:h-10 md:w-10"
+              >
+                <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+              </Button>
+            </div>
 
-        {/* Meals Section */}
-        <div>
-          <h2 className="text-xl md:text-2xl font-bold text-foreground mb-3 md:mb-4 flex items-center gap-2">
-            <UtensilsCrossed className="w-5 h-5 md:w-6 md:h-6" />
-            Today's Nutrition
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-            <MealCard
-              title="Breakfast"
-              items={dietPlans.breakfast}
-              icon={Coffee}
-              onEdit={handleMealEdit}
+            {/* Workout Section */}
+            <div>
+              <WorkoutCard 
+                day={currentDay}
+                exercises={workoutPlans[currentDay as keyof typeof workoutPlans]} 
+                onEdit={handleWorkoutEdit}
+              />
+            </div>
+
+            {/* Meals Section */}
+            <div>
+              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-3 md:mb-4 flex items-center gap-2">
+                <UtensilsCrossed className="w-5 h-5 md:w-6 md:h-6" />
+                Today's Nutrition
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+                <MealCard
+                  title="Breakfast"
+                  items={dietPlans.breakfast}
+                  icon={Coffee}
+                  onEdit={handleMealEdit}
+                />
+                <MealCard
+                  title="Lunch"
+                  items={dietPlans.lunch}
+                  icon={Sandwich}
+                  onEdit={handleMealEdit}
+                />
+                <MealCard
+                  title="Snacks"
+                  items={dietPlans.snacks}
+                  icon={Apple}
+                  onEdit={handleMealEdit}
+                />
+                <MealCard
+                  title="Dinner"
+                  items={dietPlans.dinner}
+                  icon={UtensilsCrossed}
+                  onEdit={handleMealEdit}
+                />
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Workout Plan Tab */}
+          <TabsContent value="workout">
+            <WorkoutPlanTable 
+              workoutPlans={workoutPlans}
+              onUpdate={handleWorkoutPlansUpdate}
             />
-            <MealCard
-              title="Lunch"
-              items={dietPlans.lunch}
-              icon={Sandwich}
-              onEdit={handleMealEdit}
+          </TabsContent>
+
+          {/* Nutrition Plan Tab */}
+          <TabsContent value="nutrition">
+            <NutritionPlanTable 
+              dietPlans={dietPlans}
+              onUpdate={handleDietPlansUpdate}
             />
-            <MealCard
-              title="Snacks"
-              items={dietPlans.snacks}
-              icon={Apple}
-              onEdit={handleMealEdit}
-            />
-            <MealCard
-              title="Dinner"
-              items={dietPlans.dinner}
-              icon={UtensilsCrossed}
-              onEdit={handleMealEdit}
-            />
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
