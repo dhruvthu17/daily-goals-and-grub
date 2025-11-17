@@ -107,10 +107,9 @@ const Index = () => {
       <div className="container max-w-7xl mx-auto px-4 py-8 md:py-12">
         {/* Header */}
         <div className="text-center mb-10 md:mb-14">
-          <h1 className="text-5xl md:text-7xl font-bold mb-3 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-            Daily Goals & Grub
+          <h1 className="text-5xl md:text-7xl font-bold mb-3 text-foreground">
+            workout
           </h1>
-          <p className="text-base md:text-lg text-muted-foreground font-medium">Your personalized fitness journey starts here</p>
         </div>
 
         {/* Tabs Navigation */}
