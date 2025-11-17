@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['Spectral', 'Georgia', 'serif'],
+        serif: ['Nib Pro', 'Georgia', 'serif'],
         mono: ['Courier Prime', 'Courier New', 'monospace'],
       },
       colors: {
