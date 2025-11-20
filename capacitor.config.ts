@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'app.lovable.638da5e75c344752af0d11da4bc4a28d',
+  appId: 'com.dailygoalsandgrub.app',
   appName: 'daily-goals-and-grub',
   webDir: 'dist',
   server: {
