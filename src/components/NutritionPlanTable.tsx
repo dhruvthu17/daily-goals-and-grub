@@ -127,7 +127,7 @@ export const NutritionPlanTable = ({ dietPlans, onUpdate }: NutritionPlanTablePr
                   value={editedPlans[currentDay]?.[meal.key] || ""}
                   onChange={(e) => updateMeal(currentDay, meal.key, e.target.value)}
                   placeholder="Enter food items, one per line&#10;Example:&#10;Grilled chicken breast (200g)&#10;Brown rice (1 cup)"
-                  className="glass min-h-[150px] font-mono text-sm"
+                  className="glass min-h-[150px] font-serif text-sm"
                 />
               </div>
             );
