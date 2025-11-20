@@ -132,4 +132,9 @@ All colors MUST be HSL.
   input, textarea {
     text-transform: none;
   }
+  
+  /* Apply font to placeholders */
+  ::placeholder {
+    @apply font-serif;
+  }
 }
