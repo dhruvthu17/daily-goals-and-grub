@@ -39,7 +39,7 @@ export const EditWorkoutDialog = ({ day, exercises, onSave }: EditWorkoutDialogP
             value={editedExercises}
             onChange={(e) => setEditedExercises(e.target.value)}
             placeholder="Enter exercises, one per line&#10;Example:&#10;Chest: Bench Press 4x8&#10;Triceps: Dips 3x12"
-            className="glass min-h-[200px] font-mono text-sm"
+            className="glass min-h-[200px] font-serif text-sm"
           />
           <div className="flex gap-2 justify-end">
             <Button variant="outline" onClick={() => setOpen(false)} className="glass">
