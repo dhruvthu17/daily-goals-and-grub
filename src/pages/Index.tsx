@@ -125,12 +125,12 @@ const Index = () => {
             {/* Day Navigation */}
             <div className="flex items-center justify-between glass rounded-2xl p-3 md:p-4">
               <Button
-                variant="ghost"
+                variant="outline"
                 size="icon"
                 onClick={prevDay}
-                className="hover:bg-foreground/5 h-9 w-9 md:h-10 md:w-10"
+                className="bg-background hover:bg-accent h-9 w-9 md:h-10 md:w-10"
               >
-                <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+                <ChevronLeft className="w-5 h-5 text-foreground" />
               </Button>
               
               <div className="text-center">
@@ -143,12 +143,12 @@ const Index = () => {
               </div>
 
               <Button
-                variant="ghost"
+                variant="outline"
                 size="icon"
                 onClick={nextDay}
-                className="hover:bg-foreground/5 h-9 w-9 md:h-10 md:w-10"
+                className="bg-background hover:bg-accent h-9 w-9 md:h-10 md:w-10"
               >
-                <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+                <ChevronRight className="w-5 h-5 text-foreground" />
               </Button>
             </div>
 
