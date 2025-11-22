@@ -44,7 +44,7 @@ All colors MUST be HSL.
     --input: 0 0% 90%;
     --ring: 0 0% 0%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
 
     --glass-bg: 0 0% 100% / 0.8;
     --glass-border: 0 0% 0% / 0.1;
