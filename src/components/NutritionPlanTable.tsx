@@ -85,12 +85,12 @@ export const NutritionPlanTable = ({ dietPlans, onUpdate }: NutritionPlanTablePr
       {/* Day Navigation */}
       <div className="flex items-center justify-between glass rounded-2xl p-3 md:p-4">
         <Button
-          variant="ghost"
+          variant="default"
           size="icon"
           onClick={prevDay}
-          className="hover:bg-foreground/5 h-9 w-9 md:h-10 md:w-10"
+          className="h-9 w-9 md:h-10 md:w-10 rounded-full shadow-sm"
         >
-          <ChevronLeft className="w-4 h-4 md:w-5 md:h-5" />
+          <ChevronLeft className="w-5 h-5" />
         </Button>
         
         <div className="text-center">
@@ -103,12 +103,12 @@ export const NutritionPlanTable = ({ dietPlans, onUpdate }: NutritionPlanTablePr
         </div>
 
         <Button
-          variant="ghost"
+          variant="default"
           size="icon"
           onClick={nextDay}
-          className="hover:bg-foreground/5 h-9 w-9 md:h-10 md:w-10"
+          className="h-9 w-9 md:h-10 md:w-10 rounded-full shadow-sm"
         >
-          <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
+          <ChevronRight className="w-5 h-5" />
         </Button>
       </div>
 
