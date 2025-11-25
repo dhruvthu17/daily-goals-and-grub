@@ -82,19 +82,19 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">      
-      <div className="max-w-2xl mx-auto px-6 py-6">
+      <div className="max-w-2xl mx-auto px-4 py-3">
         {/* Header */}
-        <h1 className="text-2xl font-bold mb-6 text-foreground">
+        <h1 className="text-xl font-bold mb-3 text-foreground">
           Dashboard
         </h1>
 
         {/* Workout Section */}
-        <div className="mb-6">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-semibold text-foreground">Workout</h2>
+        <div className="mb-4">
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-semibold text-foreground">Workout</h2>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-xs h-7 px-2">
+                <Button variant="ghost" size="sm" className="text-xs h-6 px-2">
                   See All
                 </Button>
               </DialogTrigger>
@@ -107,7 +107,7 @@ const Index = () => {
             </Dialog>
           </div>
           
-          <div className="space-y-2">
+          <div className="space-y-1">
             {todayWorkouts.length > 0 ? (
               todayWorkouts.slice(0, 4).map((exercise, index) => {
                 const parts = exercise.split(':');
@@ -115,28 +115,28 @@ const Index = () => {
                 const sets = exercise.match(/(\d+x\d+)/)?.[0] || '';
                 
                 return (
-                  <div key={index} className="flex items-center justify-between py-1.5 border-b border-border last:border-0">
+                  <div key={index} className="flex items-center justify-between py-1 border-b border-border last:border-0">
                     <div className="flex items-center gap-2">
-                      <Dumbbell className="w-3.5 h-3.5 text-muted-foreground" />
-                      <span className="text-sm text-foreground">{name}</span>
+                      <Dumbbell className="w-3 h-3 text-muted-foreground" />
+                      <span className="text-xs text-foreground">{name}</span>
                     </div>
                     <span className="text-xs text-muted-foreground font-medium">{sets}</span>
                   </div>
                 );
               })
             ) : (
-              <div className="text-sm text-muted-foreground py-2">Rest day</div>
+              <div className="text-xs text-muted-foreground py-1">Rest day</div>
             )}
           </div>
         </div>
 
         {/* Meals Section */}
         <div>
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-base font-semibold text-foreground">Meals</h2>
+          <div className="flex items-center justify-between mb-2">
+            <h2 className="text-sm font-semibold text-foreground">Meals</h2>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-xs h-7 px-2">
+                <Button variant="ghost" size="sm" className="text-xs h-6 px-2">
                   See All
                 </Button>
               </DialogTrigger>
@@ -149,7 +149,7 @@ const Index = () => {
             </Dialog>
           </div>
           
-          <div className="space-y-2">
+          <div className="space-y-1">
             {Object.entries(todayMeals).map(([mealType, items]: [string, any]) => {
               const Icon = getMealIcon(mealType);
               const mealTimes: Record<string, string> = {
@@ -161,15 +161,15 @@ const Index = () => {
               const calories = Array.isArray(items) ? `${items.length * 15}gc` : '0gc';
               
               return (
-                <div key={mealType} className="py-1.5 border-b border-border last:border-0">
+                <div key={mealType} className="py-1 border-b border-border last:border-0">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Icon className="w-3.5 h-3.5 text-muted-foreground" />
-                      <span className="text-sm text-foreground capitalize">{mealType}</span>
+                      <Icon className="w-3 h-3 text-muted-foreground" />
+                      <span className="text-xs text-foreground capitalize">{mealType}</span>
                     </div>
                     <span className="text-xs text-muted-foreground font-medium">{calories}</span>
                   </div>
-                  <div className="text-xs text-muted-foreground ml-5.5 mt-0.5">
+                  <div className="text-[10px] text-muted-foreground ml-5 mt-0.5">
                     {mealTimes[mealType]}
                   </div>
                 </div>
