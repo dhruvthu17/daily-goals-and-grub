@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import { WorkoutCard } from "@/components/WorkoutCard";
-import { MealCard } from "@/components/MealCard";
+import { Button } from "@/components/ui/button";
+import { Dumbbell, Coffee, Sandwich, Apple, UtensilsCrossed, ChevronRight } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import { WorkoutPlanTable } from "@/components/WorkoutPlanTable";
 import { NutritionPlanTable } from "@/components/NutritionPlanTable";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ChevronLeft, ChevronRight, Coffee, Sandwich, Apple, UtensilsCrossed } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 
 const Index = () => {
   const { toast } = useToast();
@@ -61,157 +59,124 @@ const Index = () => {
     localStorage.setItem("dietPlans", JSON.stringify(dietPlans));
   }, [dietPlans]);
 
-  const handleWorkoutEdit = (day: number, exercises: string[]) => {
-    setWorkoutPlans(prev => ({ ...prev, [day]: exercises }));
-    toast({
-      title: "Workout Updated",
-      description: "Your workout plan has been saved.",
-    });
-  };
-
   const handleWorkoutPlansUpdate = (plans: Record<number, string[]>) => {
     setWorkoutPlans(plans);
-  };
-
-  const handleMealEdit = (mealType: string, items: string[]) => {
-    const key = mealType.toLowerCase();
-    setDietPlans(prev => ({ 
-      ...prev, 
-      [currentDay]: { 
-        ...prev[currentDay as keyof typeof prev], 
-        [key]: items 
-      } 
-    }));
-    toast({
-      title: "Meal Updated",
-      description: `Your ${mealType.toLowerCase()} plan has been saved.`,
-    });
   };
 
   const handleDietPlansUpdate = (plans: Record<number, any>) => {
     setDietPlans(plans);
   };
 
-  const nextDay = () => {
-    setCurrentDay((prev) => (prev + 1) % 7);
-  };
+  const todayWorkouts = workoutPlans[currentDay as keyof typeof workoutPlans] || [];
+  const todayMeals = dietPlans[currentDay] || { breakfast: [], lunch: [], snacks: [], dinner: [] };
 
-  const prevDay = () => {
-    setCurrentDay((prev) => (prev - 1 + 7) % 7);
+  const getMealIcon = (mealType: string) => {
+    switch(mealType) {
+      case 'breakfast': return Coffee;
+      case 'lunch': return Sandwich;
+      case 'snacks': return Apple;
+      case 'dinner': return UtensilsCrossed;
+      default: return UtensilsCrossed;
+    }
   };
-
-  const isToday = currentDay === new Date().getDay();
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">      
-      <div className="container max-w-7xl mx-auto px-4 py-8 md:py-12">
+    <div className="min-h-screen bg-background">      
+      <div className="max-w-2xl mx-auto px-6 py-6">
         {/* Header */}
-        <div className="text-center mb-10 md:mb-14">
-          <h1 className="text-5xl md:text-7xl font-bold mb-3 text-foreground">
-            workout
-          </h1>
+        <h1 className="text-2xl font-bold mb-6 text-foreground">
+          Dashboard
+        </h1>
+
+        {/* Workout Section */}
+        <div className="mb-6">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-semibold text-foreground">Workout</h2>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-xs h-7 px-2">
+                  See All
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-5xl max-h-[80vh] overflow-y-auto">
+                <WorkoutPlanTable 
+                  workoutPlans={workoutPlans}
+                  onUpdate={handleWorkoutPlansUpdate}
+                />
+              </DialogContent>
+            </Dialog>
+          </div>
+          
+          <div className="space-y-2">
+            {todayWorkouts.length > 0 ? (
+              todayWorkouts.slice(0, 4).map((exercise, index) => {
+                const parts = exercise.split(':');
+                const name = parts.length > 1 ? parts[1].trim().split(/\d+x/)[0].trim() : exercise.split(/\d+x/)[0].trim();
+                const sets = exercise.match(/(\d+x\d+)/)?.[0] || '';
+                
+                return (
+                  <div key={index} className="flex items-center justify-between py-1.5 border-b border-border last:border-0">
+                    <div className="flex items-center gap-2">
+                      <Dumbbell className="w-3.5 h-3.5 text-muted-foreground" />
+                      <span className="text-sm text-foreground">{name}</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground font-medium">{sets}</span>
+                  </div>
+                );
+              })
+            ) : (
+              <div className="text-sm text-muted-foreground py-2">Rest day</div>
+            )}
+          </div>
         </div>
 
-        {/* Tabs Navigation */}
-        <Tabs defaultValue="daily" className="w-full">
-          <TabsList className="glass grid w-full grid-cols-3 mb-8 p-1.5 h-auto gap-1">
-            <TabsTrigger value="daily" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Daily View</TabsTrigger>
-            <TabsTrigger value="workout" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Workout Plan</TabsTrigger>
-            <TabsTrigger value="nutrition" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Nutrition Plan</TabsTrigger>
-          </TabsList>
-
-          {/* Daily View Tab */}
-          <TabsContent value="daily" className="space-y-6 md:space-y-8">
-            {/* Day Navigation */}
-            <div className="flex items-center justify-between glass rounded-2xl p-3 md:p-4">
-              <Button
-                variant="default"
-                size="icon"
-                onClick={prevDay}
-                className="h-9 w-9 md:h-10 md:w-10 rounded-full shadow-sm"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </Button>
+        {/* Meals Section */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-base font-semibold text-foreground">Meals</h2>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="sm" className="text-xs h-7 px-2">
+                  See All
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-5xl max-h-[80vh] overflow-y-auto">
+                <NutritionPlanTable 
+                  dietPlans={dietPlans}
+                  onUpdate={handleDietPlansUpdate}
+                />
+              </DialogContent>
+            </Dialog>
+          </div>
+          
+          <div className="space-y-2">
+            {Object.entries(todayMeals).map(([mealType, items]: [string, any]) => {
+              const Icon = getMealIcon(mealType);
+              const mealTimes: Record<string, string> = {
+                breakfast: '8:00 AM',
+                lunch: '12:30 PM',
+                snacks: '3:00 PM',
+                dinner: '6:45 PM'
+              };
+              const calories = Array.isArray(items) ? `${items.length * 15}gc` : '0gc';
               
-              <div className="text-center">
-                <h2 className="text-xl md:text-2xl font-bold text-foreground">{days[currentDay]}</h2>
-                {isToday && (
-                  <span className="inline-block mt-1 px-2 md:px-3 py-0.5 md:py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
-                    Today
-                  </span>
-                )}
-              </div>
-
-              <Button
-                variant="default"
-                size="icon"
-                onClick={nextDay}
-                className="h-9 w-9 md:h-10 md:w-10 rounded-full shadow-sm"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </Button>
-            </div>
-
-            {/* Workout Section */}
-            <div>
-              <WorkoutCard 
-                day={currentDay}
-                exercises={workoutPlans[currentDay as keyof typeof workoutPlans]} 
-                onEdit={handleWorkoutEdit}
-              />
-            </div>
-
-            {/* Meals Section */}
-            <div>
-              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-3 md:mb-4 flex items-center gap-2">
-                <UtensilsCrossed className="w-5 h-5 md:w-6 md:h-6" />
-                Today's Nutrition
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
-                <MealCard
-                  title="Breakfast"
-                  items={dietPlans[currentDay]?.breakfast || []}
-                  icon={Coffee}
-                  onEdit={handleMealEdit}
-                />
-                <MealCard
-                  title="Lunch"
-                  items={dietPlans[currentDay]?.lunch || []}
-                  icon={Sandwich}
-                  onEdit={handleMealEdit}
-                />
-                <MealCard
-                  title="Snacks"
-                  items={dietPlans[currentDay]?.snacks || []}
-                  icon={Apple}
-                  onEdit={handleMealEdit}
-                />
-                <MealCard
-                  title="Dinner"
-                  items={dietPlans[currentDay]?.dinner || []}
-                  icon={UtensilsCrossed}
-                  onEdit={handleMealEdit}
-                />
-              </div>
-            </div>
-          </TabsContent>
-
-          {/* Workout Plan Tab */}
-          <TabsContent value="workout">
-            <WorkoutPlanTable 
-              workoutPlans={workoutPlans}
-              onUpdate={handleWorkoutPlansUpdate}
-            />
-          </TabsContent>
-
-          {/* Nutrition Plan Tab */}
-          <TabsContent value="nutrition">
-            <NutritionPlanTable 
-              dietPlans={dietPlans}
-              onUpdate={handleDietPlansUpdate}
-            />
-          </TabsContent>
-        </Tabs>
+              return (
+                <div key={mealType} className="py-1.5 border-b border-border last:border-0">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Icon className="w-3.5 h-3.5 text-muted-foreground" />
+                      <span className="text-sm text-foreground capitalize">{mealType}</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground font-medium">{calories}</span>
+                  </div>
+                  <div className="text-xs text-muted-foreground ml-5.5 mt-0.5">
+                    {mealTimes[mealType]}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
