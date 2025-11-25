@@ -104,39 +104,39 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">      
-      <div className="container max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <div className="container max-w-7xl mx-auto px-3 py-4 md:py-6">
         {/* Header */}
-        <div className="text-center mb-10 md:mb-14">
-          <h1 className="text-5xl md:text-7xl font-bold mb-3 text-foreground">
-            workout
+        <div className="text-center mb-4 md:mb-6">
+          <h1 className="text-3xl md:text-4xl font-bold text-foreground">
+            Workout
           </h1>
         </div>
 
         {/* Tabs Navigation */}
         <Tabs defaultValue="daily" className="w-full">
-          <TabsList className="glass grid w-full grid-cols-3 mb-8 p-1.5 h-auto gap-1">
-            <TabsTrigger value="daily" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Daily View</TabsTrigger>
-            <TabsTrigger value="workout" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Workout Plan</TabsTrigger>
-            <TabsTrigger value="nutrition" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-3">Nutrition Plan</TabsTrigger>
+          <TabsList className="glass grid w-full grid-cols-3 mb-4 p-1 h-auto gap-1">
+            <TabsTrigger value="daily" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-2 text-sm">Daily</TabsTrigger>
+            <TabsTrigger value="workout" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-2 text-sm">Workout</TabsTrigger>
+            <TabsTrigger value="nutrition" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground font-semibold py-2 text-sm">Nutrition</TabsTrigger>
           </TabsList>
 
           {/* Daily View Tab */}
-          <TabsContent value="daily" className="space-y-6 md:space-y-8">
+          <TabsContent value="daily" className="space-y-3 md:space-y-4">
             {/* Day Navigation */}
-            <div className="flex items-center justify-between glass rounded-2xl p-3 md:p-4">
+            <div className="flex items-center justify-between glass rounded-2xl p-2 md:p-3">
               <Button
                 variant="default"
                 size="icon"
                 onClick={prevDay}
-                className="h-9 w-9 md:h-10 md:w-10 rounded-full shadow-sm"
+                className="h-8 w-8 md:h-9 md:w-9 rounded-full shadow-sm"
               >
-                <ChevronLeft className="w-5 h-5" />
+                <ChevronLeft className="w-4 h-4" />
               </Button>
               
               <div className="text-center">
-                <h2 className="text-xl md:text-2xl font-bold text-foreground">{days[currentDay]}</h2>
+                <h2 className="text-lg md:text-xl font-bold text-foreground">{days[currentDay]}</h2>
                 {isToday && (
-                  <span className="inline-block mt-1 px-2 md:px-3 py-0.5 md:py-1 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
+                  <span className="inline-block mt-0.5 px-2 py-0.5 text-xs font-semibold bg-primary text-primary-foreground rounded-full">
                     Today
                   </span>
                 )}
@@ -146,9 +146,9 @@ const Index = () => {
                 variant="default"
                 size="icon"
                 onClick={nextDay}
-                className="h-9 w-9 md:h-10 md:w-10 rounded-full shadow-sm"
+                className="h-8 w-8 md:h-9 md:w-9 rounded-full shadow-sm"
               >
-                <ChevronRight className="w-5 h-5" />
+                <ChevronRight className="w-4 h-4" />
               </Button>
             </div>
 
@@ -163,11 +163,11 @@ const Index = () => {
 
             {/* Meals Section */}
             <div>
-              <h2 className="text-xl md:text-2xl font-bold text-foreground mb-3 md:mb-4 flex items-center gap-2">
-                <UtensilsCrossed className="w-5 h-5 md:w-6 md:h-6" />
-                Today's Nutrition
+              <h2 className="text-lg md:text-xl font-bold text-foreground mb-2 md:mb-3 flex items-center gap-2">
+                <UtensilsCrossed className="w-4 h-4 md:w-5 md:h-5" />
+                Nutrition
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-3">
                 <MealCard
                   title="Breakfast"
                   items={dietPlans[currentDay]?.breakfast || []}

@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        serif: ['Nib Pro', 'Georgia', 'serif'],
+        sans: ['Inter', 'system-ui', 'Helvetica', 'Arial', 'sans-serif'],
         mono: ['Courier Prime', 'Courier New', 'monospace'],
       },
       colors: {
